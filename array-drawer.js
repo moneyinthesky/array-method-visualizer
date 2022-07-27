@@ -26,7 +26,7 @@ export class ArrayDrawer {
     }
     
     buildText(value, id, x, y) {
-        let xPosition = (this.config.elementSize - (value.length * 9.6)) / 2;
+        let xPosition = (this.config.elementSize - (String(value).length * 9.6)) / 2;
         let textElement = this.draw.text(add => add.tspan(value).attr({ x: x + xPosition, y, relativeX: x }));
         textElement.id(id)
             .fill('black')

@@ -2,25 +2,30 @@ import { configBuilder } from './config.js'
 import { waitingAsyncEventListener } from './async-events.js'
 import { ArrayDrawer } from './array-drawer.js'
 
-let mode = 'map'
 let array = ['apple', 'orange', 'banana'];
 let mapFunction = value => value.toUpperCase();
 let filterFunction = value => value.length === 6;
 
 const config = configBuilder(array);
 
-let draw = SVG().addTo('body').size(config.frameWidth, config.frameHeight);
-let drawer = new ArrayDrawer(draw, config);
+drawPanel(1);
+runAnimation('map', 1);
 
-let frameGroup = draw.group().id('frame');
-frameGroup.add(draw.rect(config.frameWidth, config.frameHeight).fill(config.backgroundColor).attr({ rx: 10 }));
-let movingArray = drawer.buildArrayGroup(array, 'movingArray', 0);
-frameGroup.add(movingArray);
-frameGroup.add(drawer.buildArrayGroup(array, 'staticArray'));
+drawPanel(2);
+runAnimation('filter', 2);
 
-runAnimation();
+function drawPanel(id) {
+    let draw = SVG().addTo('body').size(config.frameWidth, config.frameHeight).attr({ style: 'margin-bottom: 10px'});
+    let drawer = new ArrayDrawer(draw, config);
 
-async function runAnimation() {
+    let frameGroup = draw.group().id(`frame${id}`);
+    frameGroup.add(draw.rect(config.frameWidth, config.frameHeight).fill(config.backgroundColor).attr({ rx: 10 }));
+    frameGroup.add(drawer.buildArrayGroup(array, `movingArray${id}`, 0));
+    frameGroup.add(drawer.buildArrayGroup(array, `staticArray${id}`));
+}
+
+async function runAnimation(mode, id) {
+    let movingArray = SVG(document.getElementById(`movingArray${id}`));
     let filteredElements = 0;
     for(let [index, element] of movingArray.children().entries()) {
         prepareMove(element, config.halfwayPosition, 0, 0);
