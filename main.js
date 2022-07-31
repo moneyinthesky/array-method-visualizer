@@ -32,14 +32,13 @@ function drawPanel(id, methodFunction) {
     frameGroup.add(draw.line(0, config.arrayFrameHeight, config.frameWidth, config.arrayFrameHeight).stroke({ width: 2, color: '#455A64' }));
 
     frameGroup.add(draw.rect(config.middleSectionWidth * 0.75, config.infoFrameHeight * 0.75).fill('#FFF176').attr({ x: config.arrayPanelWidth + (config.middleSectionWidth * 0.25 / 2), y: config.arrayFrameHeight + (config.infoFrameHeight * 0.25 / 2), rx: 10, stroke: 'black', 'fill-opacity': 0.5 }));
-    frameGroup.add(buildFunctionText(draw, methodFunction, config.arrayPanelWidth + (config.middleSectionWidth * 0.25 / 2), config.arrayFrameHeight + (config.infoFrameHeight * 0.25 / 2)));
+    frameGroup.add(buildFunctionText(draw, methodFunction, config.middleSectionWidth * 0.75, config.infoFrameHeight * 0.75, config.arrayPanelWidth + (config.middleSectionWidth * 0.25 / 2), config.arrayFrameHeight + (config.infoFrameHeight * 0.25 / 2)));
 }
 
-function buildFunctionText(draw, value, x, y) {
+function buildFunctionText(draw, value, containingWidth, containingHeight, xOffset, yOffset) {
     let valueToShow = JSON.stringify(value, (key, val) => val + '');
     valueToShow = valueToShow.slice(1, valueToShow.length - 1);
-    let xPosition = (config.middleSectionWidth - (valueToShow.length * 14)) / 2;
-    let textElement = draw.text(add => add.tspan(valueToShow).attr({ x: x + xPosition, y: y + 30, relativeX: x }));
+    let textElement = draw.text(add => add.tspan(valueToShow).attr({ x: containingWidth / 2 + xOffset, y: containingHeight / 2 + yOffset }));
     textElement
         .fill('black')
         .attr({ 
@@ -47,7 +46,9 @@ function buildFunctionText(draw, value, x, y) {
             'font-family': 'Courier New', 
             'font-size': 16, 
             'font-weight': 'bold', 
-            'letter-spacing': '0em'
+            'letter-spacing': '0em',
+            'text-anchor': 'middle',
+            'dominant-baseline': 'middle'
         });
     return textElement;
 }
