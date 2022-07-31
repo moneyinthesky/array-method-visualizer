@@ -31,5 +31,43 @@
 }
 
 .controls {
-    padding-bottom: 5px;
+    padding: 5px;
+    padding-bottom: 10px;
+    background-color: #263238;
+    margin-bottom: 5px;
+    border-radius: 10px;
+}
+
+#goButton {
+    float: right;
+    background-color: #81C784;
+    border-radius: 5px;
+    border: 1px solid;
+    font-family: 'Helvetica';
+    font-size: 18;
+}
+
+code {
+    font-family: Consolas,"courier new";
+    font-weight:500;
+    color: #81D4FA;
+    background-color: #263238;
+    padding: 3px;
+    font-size: 105%;
+    line-height: 22px;
+}
+
+select {
+    font-family:inherit;
+    font-weight: inherit;
+    font-size: inherit;
+    color: inherit;
+    background-color: inherit;
+    font-size: inherit;
+    border: 0;
+    -webkit-appearance: none;
+}
+
+#valueFunction {
+    max-width: 200px;
 }

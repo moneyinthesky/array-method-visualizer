@@ -5,24 +5,29 @@ import { prepareMove, updateElementText, updateElementIndex, updateElementColor,
 let array = ['apple', 'orange', 'banana'];
 let config = configBuilder(array);
 
-let valueReturnFunctionAsString = "value";
-let arrayFunction = value => value;
+document.getElementById('controls').style.width = config.frameWidth - 10;
+
+let valueFunction = value => value;
 
 let mode = 'map';
+updateModeWidth();
 
 document.getElementById('goButton').addEventListener('click', go);
-document.getElementById('array').value = array;
-document.getElementById('valueReturnFunctionAsString').value = valueReturnFunctionAsString;
+document.getElementById('array').innerText = array.join(", ");
+document.getElementById('valueFunction').innerText = valueFunction;
+document.getElementById('mode').addEventListener('change', _ => updateModeWidth());
+
+function updateModeWidth() {
+    document.getElementById('mode').style.width = `${document.getElementById('mode').value.length * 10}px`;
+}
 
 function go() {
-    array = document.getElementById('array').value
+    array = document.getElementById('array').innerText
         .split(",")
         .map(v => v.trim());
     config = configBuilder(array);
 
-    valueReturnFunctionAsString = document.getElementById('valueReturnFunctionAsString').value;
-    arrayFunction = new Function("value", `return ${valueReturnFunctionAsString}`);
-
+    valueFunction = new Function("return " + document.getElementById('valueFunction').innerText)();
     mode = document.getElementById('mode').value;
 
     let visualization = document.getElementById('visualization');
@@ -54,7 +59,7 @@ function drawPanel(id) {
     frameGroup.add(draw.line(0, config.arrayFrameHeight, config.frameWidth, config.arrayFrameHeight).stroke({ width: 2, color: '#455A64' }));
 
     frameGroup.add(draw.rect(config.infoBoxWidth, config.infoBoxHeight).fill('#FFF176').attr({ x: config.arrayPanelWidth + config.bezelWidth, y: config.arrayFrameHeight + config.bezelWidth, rx: 10, stroke: 'black', 'fill-opacity': 0.5 }));
-    let functionText = buildFunctionText(draw, `value => ${valueReturnFunctionAsString}`)
+    let functionText = buildFunctionText(draw, valueFunction)
     center(functionText, config.infoBoxWidth, config.infoBoxHeight, config.arrayPanelWidth + config.bezelWidth, config.arrayFrameHeight + config.bezelWidth);
     frameGroup.add(functionText);
 }
@@ -95,14 +100,14 @@ async function runAnimation(mode, id) {
 
         if(mode === 'map') {
             updateElementColor(element, config.mappedArrayColor);
-            updateElementText(element, arrayFunction, config.elementSize);
+            updateElementText(element, valueFunction, config.elementSize);
 
             prepareMove(element, config.endPosition, 0, config.halfwayPosition);
             await triggerAnimation(element, 'animateMap', 'map');
         } else if(mode === 'filter') {
             let tSpan = element.children()[1].children();
             let currentValue = tSpan.text()[0];
-            if(arrayFunction(currentValue)) {
+            if(valueFunction(currentValue)) {
                 updateElementColor(element, config.mappedArrayColor);
                 updateElementIndex(element, filteredElements, config.elementSize);
 

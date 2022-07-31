@@ -8,14 +8,15 @@
 </head>
 
 <body>
-    <div class="controls">
-        <select id="mode">
-            <option value="map">map</option>
-            <option value="filter">filter</option>
-        </select>
-        <input id="array"></input>
-        value => <input id="valueReturnFunctionAsString" size="50"></input>
-        <button id="goButton">Go</button>
+    <div id="controls" class="controls">
+        <code>
+            let arr = [<span id="array" contenteditable="true"></span>];<br/>
+            arr.<select id="mode">
+                <option value="map">map</option>
+                <option value="filter">filter</option>
+            </select>(<span id="valueFunction" contenteditable="true"></span>);
+        </code>
+        <button id="goButton">Run</button>
     </div>
 </body>
 
