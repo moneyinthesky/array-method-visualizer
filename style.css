@@ -29,3 +29,7 @@
 .animateHalfway {
     animation: halfway 1s forwards ease;
 }
+
+.controls {
+    padding-bottom: 5px;
+}

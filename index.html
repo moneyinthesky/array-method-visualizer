@@ -2,11 +2,21 @@
 
 <head>
     <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.min.js"></script>
+    <script src="main.js" type="module"></script>
 </head>
 
 <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.min.js"></script>
-    <script src="main.js" type="module"></script>
+    <div class="controls">
+        <select id="mode">
+            <option value="map">map</option>
+            <option value="filter">filter</option>
+        </select>
+        <input id="array"></input>
+        value => <input id="valueReturnFunctionAsString" size="50"></input>
+        <button id="goButton">Go</button>
+    </div>
 </body>
 
 </html>

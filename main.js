@@ -3,19 +3,37 @@ import { ArrayDrawer } from './array-drawer.js'
 import { prepareMove, updateElementText, updateElementIndex, updateElementColor, triggerAnimation } from './animate.js'
 
 let array = ['apple', 'orange', 'banana'];
-let mapFunction = value => value.toUpperCase();
-let filterFunction = value => value.startsWith('o');
+let config = configBuilder(array);
 
-const config = configBuilder(array);
+let valueReturnFunctionAsString = "value";
+let arrayFunction = value => value;
 
-drawPanel(1, mapFunction);
-runAnimation('map', 1);
+let mode = 'map';
 
-// drawPanel(2, filterFunction);
-// runAnimation('filter', 2);
+document.getElementById('goButton').addEventListener('click', go);
+document.getElementById('array').value = array;
+document.getElementById('valueReturnFunctionAsString').value = valueReturnFunctionAsString;
 
-function drawPanel(id, methodFunction) {
-    let draw = SVG().addTo('body').size(config.frameWidth, config.totalFrameHeight).attr({ style: 'margin-bottom: 10px'});
+function go() {
+    array = document.getElementById('array').value
+        .split(",")
+        .map(v => v.trim());
+    config = configBuilder(array);
+
+    valueReturnFunctionAsString = document.getElementById('valueReturnFunctionAsString').value;
+    arrayFunction = new Function("value", `return ${valueReturnFunctionAsString}`);
+
+    mode = document.getElementById('mode').value;
+
+    let visualization = document.getElementById('visualization');
+    if(visualization)
+        visualization.remove();
+    drawPanel(1);
+    runAnimation(mode, 1);
+}
+
+function drawPanel(id) {
+    let draw = SVG().id('visualization').addTo('body').size(config.frameWidth, config.totalFrameHeight).attr({ style: 'margin-bottom: 10px'});
     let drawer = new ArrayDrawer(draw, config);
 
     let frameGroup = draw.group().id(`frame${id}`);
@@ -36,7 +54,7 @@ function drawPanel(id, methodFunction) {
     frameGroup.add(draw.line(0, config.arrayFrameHeight, config.frameWidth, config.arrayFrameHeight).stroke({ width: 2, color: '#455A64' }));
 
     frameGroup.add(draw.rect(config.infoBoxWidth, config.infoBoxHeight).fill('#FFF176').attr({ x: config.arrayPanelWidth + config.bezelWidth, y: config.arrayFrameHeight + config.bezelWidth, rx: 10, stroke: 'black', 'fill-opacity': 0.5 }));
-    let functionText = buildFunctionText(draw, methodFunction)
+    let functionText = buildFunctionText(draw, `value => ${valueReturnFunctionAsString}`)
     center(functionText, config.infoBoxWidth, config.infoBoxHeight, config.arrayPanelWidth + config.bezelWidth, config.arrayFrameHeight + config.bezelWidth);
     frameGroup.add(functionText);
 }
@@ -77,14 +95,14 @@ async function runAnimation(mode, id) {
 
         if(mode === 'map') {
             updateElementColor(element, config.mappedArrayColor);
-            updateElementText(element, mapFunction, config.elementSize);
+            updateElementText(element, arrayFunction, config.elementSize);
 
             prepareMove(element, config.endPosition, 0, config.halfwayPosition);
             await triggerAnimation(element, 'animateMap', 'map');
         } else if(mode === 'filter') {
             let tSpan = element.children()[1].children();
             let currentValue = tSpan.text()[0];
-            if(filterFunction(currentValue)) {
+            if(arrayFunction(currentValue)) {
                 updateElementColor(element, config.mappedArrayColor);
                 updateElementIndex(element, filteredElements, config.elementSize);
 
