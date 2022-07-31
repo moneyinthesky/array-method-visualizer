@@ -16,9 +16,7 @@ export class ArrayDrawer {
     
     buildArrayElement(value, index, x, y, opacity = 1) {
         let group = this.draw.group().id(`element${index}`).opacity(opacity).attr({ style: `--order: ${index}`});
-        let container = this.draw.rect(this.config.elementSize, this.config.elementSize).id('container').fill(this.config.arrayColor).attr({ x, y, rx: 10, stroke: 'black' });
-        group.add(container);
-        
+        group.add(this.draw.rect(this.config.elementSize, this.config.elementSize).id('container').fill(this.config.arrayColor).attr({ x, y, rx: 10, stroke: 'black' }));
         group.add(this.buildText(value, `value${index}`, x, y + 40));
         group.add(this.buildText(index, `index${index}`, x, y + 85));
         group.add(this.draw.line(x, y + 65, x + this.config.elementSize, y + 65).stroke('black'));

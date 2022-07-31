@@ -4,24 +4,52 @@ import { ArrayDrawer } from './array-drawer.js'
 
 let array = ['apple', 'orange', 'banana'];
 let mapFunction = value => value.toUpperCase();
-let filterFunction = value => value.length === 6;
+let filterFunction = value => value.startsWith('o');
 
 const config = configBuilder(array);
 
-drawPanel(1);
+drawPanel(1, mapFunction);
 runAnimation('map', 1);
 
-drawPanel(2);
-runAnimation('filter', 2);
+// drawPanel(2, filterFunction);
+// runAnimation('filter', 2);
 
-function drawPanel(id) {
-    let draw = SVG().addTo('body').size(config.frameWidth, config.frameHeight).attr({ style: 'margin-bottom: 10px'});
+function drawPanel(id, methodFunction) {
+    let draw = SVG().addTo('body').size(config.frameWidth, config.totalFrameHeight).attr({ style: 'margin-bottom: 10px'});
     let drawer = new ArrayDrawer(draw, config);
 
     let frameGroup = draw.group().id(`frame${id}`);
-    frameGroup.add(draw.rect(config.frameWidth, config.frameHeight).fill(config.backgroundColor).attr({ rx: 10 }));
-    frameGroup.add(drawer.buildArrayGroup(array, `movingArray${id}`, 0));
+    frameGroup.add(draw.rect(config.frameWidth, config.totalFrameHeight).fill(config.backgroundColor).attr({ rx: 10 }));
+
+    frameGroup.add(draw.rect(config.arrayPanelWidth, config.totalFrameHeight).fill('#4DD0E1').attr({ x: 0, y: 0, rx: 10, stroke: '#0097A7', 'fill-opacity': 0.25 }));
+    frameGroup.add(draw.text('Original Array').font({ family: 'Helvetica', size: 16 }).attr({ x: config.bezelWidth, y: config.arrayFrameHeight + 40 }));
     frameGroup.add(drawer.buildArrayGroup(array, `staticArray${id}`));
+    
+    frameGroup.add(draw.rect(config.arrayPanelWidth, config.totalFrameHeight).fill('#81C784').attr({ x: config.frameWidth - config.arrayPanelWidth, y: 0, rx: 10, stroke: '#388E3C', 'fill-opacity': 0.25 }));
+    frameGroup.add(draw.text('New Array').font({ family: 'Helvetica', size: 16 }).attr({ x: config.frameWidth - config.elementSize - (config.bezelWidth / 2), y: config.arrayFrameHeight + 40 }));
+    frameGroup.add(drawer.buildArrayGroup(array, `movingArray${id}`, 0));
+
+    frameGroup.add(draw.line(0, config.arrayFrameHeight, config.frameWidth, config.arrayFrameHeight).stroke({ width: 2, color: '#455A64' }));
+
+    frameGroup.add(draw.rect(config.middleSectionWidth * 0.75, config.infoFrameHeight * 0.75).fill('#FFF176').attr({ x: config.arrayPanelWidth + (config.middleSectionWidth * 0.25 / 2), y: config.arrayFrameHeight + (config.infoFrameHeight * 0.25 / 2), rx: 10, stroke: 'black', 'fill-opacity': 0.5 }));
+    frameGroup.add(buildFunctionText(draw, methodFunction, config.arrayPanelWidth + (config.middleSectionWidth * 0.25 / 2), config.arrayFrameHeight + (config.infoFrameHeight * 0.25 / 2)));
+}
+
+function buildFunctionText(draw, value, x, y) {
+    let valueToShow = JSON.stringify(value, (key, val) => val + '');
+    valueToShow = valueToShow.slice(1, valueToShow.length - 1);
+    let xPosition = (config.middleSectionWidth - (valueToShow.length * 14)) / 2;
+    let textElement = draw.text(add => add.tspan(valueToShow).attr({ x: x + xPosition, y: y + 30, relativeX: x }));
+    textElement
+        .fill('black')
+        .attr({ 
+            style: 'white-space: pre', 
+            'font-family': 'Courier New', 
+            'font-size': 16, 
+            'font-weight': 'bold', 
+            'letter-spacing': '0em'
+        });
+    return textElement;
 }
 
 async function runAnimation(mode, id) {
