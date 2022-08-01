@@ -9,14 +9,16 @@
 
 <body>
     <div id="controls" class="controls">
-        <code>
-            let arr = [<span id="array" contenteditable="true"></span>];<br/>
-            arr.<select id="mode">
-                <option value="map">map</option>
-                <option value="filter">filter</option>
-            </select>(<span id="valueFunction" contenteditable="true"></span>);
-        </code>
-        <button id="goButton">Run</button>
+        <form id="controlForm">
+            <code>
+                let arr = <span id="array" contenteditable="true"></span>;<br/>
+                arr.<select id="mode">
+                    <option value="map">map</option>
+                    <option value="filter">filter</option>
+                </select>(<span id="valueFunction" contenteditable="true"></span>);
+            </code>
+            <input type="submit" id="goButton" value="Run"></input>
+        </form>
     </div>
 </body>
 

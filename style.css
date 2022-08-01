@@ -38,6 +38,10 @@
     border-radius: 10px;
 }
 
+#controlForm {
+    margin: 0;
+}
+
 #goButton {
     float: right;
     background-color: #81C784;
@@ -45,6 +49,10 @@
     border: 1px solid;
     font-family: 'Helvetica';
     font-size: 18;
+}
+
+#valueFunction, #array {
+    background-color: #455A64;
 }
 
 code {
@@ -62,7 +70,7 @@ select {
     font-weight: inherit;
     font-size: inherit;
     color: inherit;
-    background-color: inherit;
+    background-color: #455A64;
     font-size: inherit;
     border: 0;
     -webkit-appearance: none;

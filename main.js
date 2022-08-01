@@ -12,8 +12,20 @@ let valueFunction = value => value;
 let mode = 'map';
 updateModeWidth();
 
-document.getElementById('goButton').addEventListener('click', go);
-document.getElementById('array').innerText = array.join(", ");
+document.getElementById('controlForm').addEventListener('submit', go);
+document.getElementById('array').addEventListener('keydown', e => {
+    if(e.keyCode == 13) {
+        e.preventDefault();
+        go(e);
+    }
+});
+document.getElementById('array').innerText = JSON.stringify(array);
+document.getElementById('valueFunction').addEventListener('keydown', e => {
+    if(e.keyCode == 13) {
+        e.preventDefault();
+        go(e);
+    }
+});
 document.getElementById('valueFunction').innerText = valueFunction;
 document.getElementById('mode').addEventListener('change', _ => updateModeWidth());
 
@@ -21,10 +33,9 @@ function updateModeWidth() {
     document.getElementById('mode').style.width = `${document.getElementById('mode').value.length * 10}px`;
 }
 
-function go() {
-    array = document.getElementById('array').innerText
-        .split(",")
-        .map(v => v.trim());
+function go(event) {
+    event.preventDefault();
+    array = JSON.parse(document.getElementById('array').innerText);
     config = configBuilder(array);
 
     valueFunction = new Function("return " + document.getElementById('valueFunction').innerText)();
