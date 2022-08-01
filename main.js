@@ -7,7 +7,7 @@ let config = configBuilder(array);
 
 document.getElementById('controls').style.width = config.frameWidth - 10;
 
-let valueFunction = value => value;
+let valueFunction = v => v.toUpperCase();
 
 let mode = 'map';
 updateModeWidth();
@@ -76,9 +76,14 @@ function drawPanel(id) {
 
     frameGroup.add(draw.line(0, config.arrayFrameHeight, config.frameWidth, config.arrayFrameHeight).stroke({ width: 2, color: '#455A64' }));
 
-    frameGroup.add(draw.rect(config.infoBoxWidth, config.infoBoxHeight).fill('#FFF176').attr({ x: config.arrayPanelWidth + config.bezelWidth, y: config.arrayFrameHeight + config.bezelWidth, rx: 10, stroke: 'black', 'fill-opacity': 0.5 }));
+    frameGroup.add(draw.rect(config.infoBoxWidth * 0.20, config.infoBoxHeight).fill('#FFF176').attr({ x: config.arrayPanelWidth + config.bezelWidth, y: config.arrayFrameHeight + config.bezelWidth, rx: 10, stroke: 'black', 'fill-opacity': 0.5 }));
+    let method = buildFunctionText(draw, mode)
+    center(method, config.infoBoxWidth * 0.20, config.infoBoxHeight, config.arrayPanelWidth + config.bezelWidth, config.arrayFrameHeight + config.bezelWidth);
+    frameGroup.add(method);
+    
+    frameGroup.add(draw.rect(config.infoBoxWidth * 0.75, config.infoBoxHeight).fill('#FFF176').attr({ x: config.arrayPanelWidth + config.bezelWidth + config.infoBoxWidth * 0.25, y: config.arrayFrameHeight + config.bezelWidth, rx: 10, stroke: 'black', 'fill-opacity': 0.5 }));
     let functionText = buildFunctionText(draw, valueFunction)
-    center(functionText, config.infoBoxWidth, config.infoBoxHeight, config.arrayPanelWidth + config.bezelWidth, config.arrayFrameHeight + config.bezelWidth);
+    center(functionText, config.infoBoxWidth * 0.75, config.infoBoxHeight, config.arrayPanelWidth + config.bezelWidth + config.infoBoxWidth * 0.25, config.arrayFrameHeight + config.bezelWidth);
     frameGroup.add(functionText);
 }
 
