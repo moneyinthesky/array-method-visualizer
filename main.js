@@ -43,7 +43,7 @@ function submitHandler(event) {
 }
 
 function updateModeWidth() {
-    document.getElementById('mode').style.width = `${document.getElementById('mode').value.length * 10}px`;
+    document.getElementById('mode').style.width = `${document.getElementById('mode').value.length * 11}px`;
 }
 
 function go(event) {

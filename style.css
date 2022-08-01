@@ -64,7 +64,8 @@
 }
 
 #valueFunction, #array {
-    background-color: #827717;
+    border: 1px solid;
+    border-color: #827717;
 }
 
 code {
@@ -83,9 +84,10 @@ select {
     font-weight: inherit;
     font-size: inherit;
     color: inherit;
-    background-color: #827717;
+    background-color: inherit;
     font-size: inherit;
-    border: 0;
+    border: 1px solid;
+    border-color: #827717;
     -webkit-appearance: none;
 }
 
