@@ -29,6 +29,13 @@ document.getElementById('valueFunction').addEventListener('keydown', e => {
 document.getElementById('valueFunction').innerText = valueFunction;
 document.getElementById('mode').addEventListener('change', _ => updateModeWidth());
 
+document.getElementById('copyButton').addEventListener('click', e => {
+    e.preventDefault();
+    let code = 'let arr = ' + document.getElementById('array').innerText + ';\n';
+    code += `arr.${document.getElementById('mode').value}(${document.getElementById('valueFunction').innerText});`;
+    navigator.clipboard.writeText(code);
+});
+
 function updateModeWidth() {
     document.getElementById('mode').style.width = `${document.getElementById('mode').value.length * 10}px`;
 }

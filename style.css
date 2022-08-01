@@ -42,6 +42,15 @@
     margin: 0;
 }
 
+#copyButton {
+    float: right;
+    background-color: #4DD0E1;
+    border-radius: 5px;
+    border: 1px solid;
+    font-family: 'Helvetica';
+    font-size: 18;
+}
+
 #goButton {
     float: right;
     background-color: #81C784;
@@ -52,7 +61,7 @@
 }
 
 #valueFunction, #array {
-    background-color: #455A64;
+    background-color: #827717;
 }
 
 code {
@@ -70,7 +79,7 @@ select {
     font-weight: inherit;
     font-size: inherit;
     color: inherit;
-    background-color: #455A64;
+    background-color: #827717;
     font-size: inherit;
     border: 0;
     -webkit-appearance: none;
