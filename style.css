@@ -31,11 +31,14 @@
 }
 
 .controls {
-    padding: 5px;
-    padding-bottom: 10px;
+    padding: 15px;
     background-color: #263238;
     margin-bottom: 5px;
     border-radius: 10px;
+    display: grid;
+    grid-template-areas:
+        "code code code code buttons"
+        "code code code code buttons"
 }
 
 #controlForm {
@@ -65,6 +68,7 @@
 }
 
 code {
+    grid-area: code;
     font-family: Consolas,"courier new";
     font-weight:500;
     color: #81D4FA;

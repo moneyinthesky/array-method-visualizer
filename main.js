@@ -2,39 +2,45 @@ import { configBuilder } from './config.js'
 import { ArrayDrawer } from './array-drawer.js'
 import { prepareMove, updateElementText, updateElementIndex, updateElementColor, triggerAnimation } from './animate.js'
 
-let array = ['apple', 'orange', 'banana'];
+let defaultValues = {
+    array: ['apple', 'orange', 'banana'],
+    valueFunction: v => v.toUpperCase(),
+    mode: 'map'
+}
+
+let {array, valueFunction, mode} = defaultValues;
 let config = configBuilder(array);
+initializeWidths();
+setUpEventListeners();
 
-document.getElementById('controls').style.width = config.frameWidth - 10;
+function initializeWidths() {
+    document.getElementById('controls').style.width = config.frameWidth - 30;
+    updateModeWidth();
+}
 
-let valueFunction = v => v.toUpperCase();
+function setUpEventListeners() {
+    document.getElementById('controlForm').addEventListener('submit', go);
+    document.getElementById('array').addEventListener('keydown', submitHandler);
+    document.getElementById('array').innerText = JSON.stringify(array);
+    document.getElementById('valueFunction').addEventListener('keydown', submitHandler);
+    document.getElementById('valueFunction').innerText = valueFunction;
+    document.getElementById('mode').addEventListener('change', _ => updateModeWidth());
+    document.getElementById('copyButton').addEventListener('click', copyCodeToClipboard);
+}
 
-let mode = 'map';
-updateModeWidth();
-
-document.getElementById('controlForm').addEventListener('submit', go);
-document.getElementById('array').addEventListener('keydown', e => {
-    if(e.keyCode == 13) {
-        e.preventDefault();
-        go(e);
-    }
-});
-document.getElementById('array').innerText = JSON.stringify(array);
-document.getElementById('valueFunction').addEventListener('keydown', e => {
-    if(e.keyCode == 13) {
-        e.preventDefault();
-        go(e);
-    }
-});
-document.getElementById('valueFunction').innerText = valueFunction;
-document.getElementById('mode').addEventListener('change', _ => updateModeWidth());
-
-document.getElementById('copyButton').addEventListener('click', e => {
-    e.preventDefault();
+function copyCodeToClipboard(event) {
+    event.preventDefault();
     let code = 'let arr = ' + document.getElementById('array').innerText + ';\n';
     code += `arr.${document.getElementById('mode').value}(${document.getElementById('valueFunction').innerText});`;
     navigator.clipboard.writeText(code);
-});
+}
+
+function submitHandler(event) {
+    if(event.keyCode == 13) {
+        event.preventDefault();
+        go(event);
+    }
+}
 
 function updateModeWidth() {
     document.getElementById('mode').style.width = `${document.getElementById('mode').value.length * 10}px`;

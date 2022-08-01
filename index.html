@@ -8,8 +8,8 @@
 </head>
 
 <body>
-    <div id="controls" class="controls">
-        <form id="controlForm">
+    <form id="controlForm">
+        <div id="controls" class="controls">        
             <code>
                 let arr = <span id="array" contenteditable="true"></span>;<br/>
                 arr.<select id="mode">
@@ -17,10 +17,10 @@
                     <option value="filter">filter</option>
                 </select>(<span id="valueFunction" contenteditable="true"></span>);
             </code>
-            <input type="submit" id="goButton" value="Run"></input>
             <button id="copyButton">Copy</button>
-        </form>
-    </div>
+            <input type="submit" id="goButton" value="Run"></input>
+        </div>
+    </form>
 </body>
 
 </html>
