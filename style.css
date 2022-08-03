@@ -39,19 +39,24 @@
     grid-template-areas:
         "code code code code buttons"
         "code code code code buttons"
+        "code code code code buttons"
 }
 
 #controlForm {
     margin: 0;
 }
 
-#copyButton {
+#copyButton, #shareButton {
     float: right;
     background-color: #4DD0E1;
     border-radius: 5px;
     border: 1px solid;
     font-family: 'Helvetica';
     font-size: 18;
+}
+
+#copyButton:active, #shareButton:active {
+    background-color: #00ACC1;
 }
 
 #goButton {
@@ -61,6 +66,10 @@
     border: 1px solid;
     font-family: 'Helvetica';
     font-size: 18;
+}
+
+#goButton:active {
+    background-color: #43A047;
 }
 
 #valueFunction, #array {

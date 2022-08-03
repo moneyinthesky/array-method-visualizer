@@ -2,16 +2,25 @@ import { configBuilder } from './config.js'
 import { ArrayDrawer } from './array-drawer.js'
 import { prepareMove, updateElementText, updateElementIndex, updateElementColor, triggerAnimation } from './animate.js'
 
+const params = new URLSearchParams(window.location.search);
 let defaultValues = {
-    array: ['apple', 'orange', 'banana'],
-    valueFunction: v => v.toUpperCase(),
-    mode: 'map'
+    array: params.get('array') ? params.get('array') : JSON.stringify(['apple', 'orange', 'banana']),
+    valueFunction: params.get('valueFunction') ? params.get('valueFunction') : v => v.toUpperCase(),
+    mode: params.get('mode') ? params.get('mode'): 'map'
 }
 
 let {array, valueFunction, mode} = defaultValues;
 let config = configBuilder(array);
+initializeValues();
 initializeWidths();
 setUpEventListeners();
+go();
+
+function initializeValues() {
+    document.getElementById('array').innerText = array;
+    document.getElementById('valueFunction').innerText = valueFunction;
+    document.getElementById('mode').value = mode;
+}
 
 function initializeWidths() {
     document.getElementById('controls').style.width = config.frameWidth - 30;
@@ -21,11 +30,10 @@ function initializeWidths() {
 function setUpEventListeners() {
     document.getElementById('controlForm').addEventListener('submit', go);
     document.getElementById('array').addEventListener('keydown', submitHandler);
-    document.getElementById('array').innerText = JSON.stringify(array);
     document.getElementById('valueFunction').addEventListener('keydown', submitHandler);
-    document.getElementById('valueFunction').innerText = valueFunction;
     document.getElementById('mode').addEventListener('change', _ => updateModeWidth());
     document.getElementById('copyButton').addEventListener('click', copyCodeToClipboard);
+    document.getElementById('shareButton').addEventListener('click', copyURLToClipboard);
 }
 
 function copyCodeToClipboard(event) {
@@ -33,6 +41,11 @@ function copyCodeToClipboard(event) {
     let code = 'let arr = ' + document.getElementById('array').innerText + ';\n';
     code += `arr.${document.getElementById('mode').value}(${document.getElementById('valueFunction').innerText});`;
     navigator.clipboard.writeText(code);
+}
+
+function copyURLToClipboard(event) {
+    event.preventDefault();
+    navigator.clipboard.writeText(buildURL());
 }
 
 function submitHandler(event) {
@@ -46,8 +59,16 @@ function updateModeWidth() {
     document.getElementById('mode').style.width = `${document.getElementById('mode').value.length * 11}px`;
 }
 
+function buildURL() {
+    let params = new URLSearchParams()
+    params.append('array', document.getElementById('array').innerText);
+    params.append('mode', mode);
+    params.append('valueFunction', document.getElementById('valueFunction').innerText);    
+    return `${window.location.href.split('?')[0]}?${params.toString()}`;
+}
+
 function go(event) {
-    event.preventDefault();
+    if(event) event.preventDefault();
     array = JSON.parse(document.getElementById('array').innerText);
     config = configBuilder(array);
 
