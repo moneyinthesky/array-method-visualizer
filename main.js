@@ -178,8 +178,7 @@ async function executeFilter(id) {
         prepareMove(element, config.halfwayPosition, 0, 0);
         await triggerAnimation(element, 'animateHalfway', 'halfway');
 
-        let tSpan = element.children()[1].children();
-        let currentValue = tSpan.text()[0];
+        let currentValue = array[index];
         if(valueFunction(currentValue)) {
             updateElementColor(element, config.mappedArrayColor);
             updateElementIndex(element, filteredElements, config.elementSize);
@@ -199,8 +198,7 @@ async function executeFind(id) {
         prepareMove(element, config.halfwayPosition, 0, 0);
         await triggerAnimation(element, 'animateHalfway', 'halfway');
 
-        let tSpan = element.children()[1].children();
-        let currentValue = tSpan.text()[0];
+        let currentValue = array[index];
         if(valueFunction(currentValue)) {
             updateElementColor(element, config.mappedArrayColor);
             convertArrayElementToValue(element);
@@ -226,8 +224,7 @@ async function executeFindIndex(id) {
         prepareMove(element, config.halfwayPosition, 0, 0);
         await triggerAnimation(element, 'animateHalfway', 'halfway');
 
-        let tSpan = element.children()[1].children();
-        let currentValue = tSpan.text()[0];
+        let currentValue = array[index];
         if(valueFunction(currentValue)) {
             updateElementColor(element, config.mappedArrayColor);
             convertArrayIndexToValue(element);
@@ -254,8 +251,7 @@ async function executeFindLast(id) {
         prepareMove(element, config.halfwayPosition, 0, 0);
         await triggerAnimation(element, 'animateHalfway', 'halfway');
 
-        let tSpan = element.children()[1].children();
-        let currentValue = tSpan.text()[0];
+        let currentValue = array[index];
         if(valueFunction(currentValue)) {
             updateElementColor(element, config.mappedArrayColor);
             convertArrayElementToValue(element);
@@ -282,8 +278,7 @@ async function executeFindLastIndex(id) {
         prepareMove(element, config.halfwayPosition, 0, 0);
         await triggerAnimation(element, 'animateHalfway', 'halfway');
 
-        let tSpan = element.children()[1].children();
-        let currentValue = tSpan.text()[0];
+        let currentValue = array[index];
         if(valueFunction(currentValue)) {
             updateElementColor(element, config.mappedArrayColor);
             convertArrayIndexToValue(element);
