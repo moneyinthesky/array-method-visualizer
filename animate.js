@@ -29,6 +29,13 @@ export async function triggerAnimation(node, animationClass, keyframe) {
     return event;
 }
 
+export function convertArrayElementToValue(node) {
+    let y = node.children()[1].children()[0].attr().y;
+    node.children()[1].children()[0].attr({
+        y: y + 15
+    });
+}
+
 function transformTextNode(node, newValue, elementSize) {
     node.children()[0].text(newValue);
 
