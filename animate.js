@@ -29,10 +29,23 @@ export async function triggerAnimation(node, animationClass, keyframe) {
     return event;
 }
 
-export function convertArrayElementToValue(node) {
-    let y = node.children()[1].children()[0].attr().y;
-    node.children()[1].children()[0].attr({
+export function convertArrayElementToValue(element) {
+    element.children()[2].attr({ opacity: 0 });
+    element.children()[3].attr({ opacity: 0 });
+
+    let y = element.children()[1].children()[0].attr().y;
+    element.children()[1].children()[0].attr({
         y: y + 15
+    });
+}
+
+export function convertArrayIndexToValue(element) {
+    element.children()[1].attr({ opacity: 0 });
+    element.children()[3].attr({ opacity: 0 });
+
+    let y = element.children()[2].children()[0].attr().y;
+    element.children()[2].children()[0].attr({
+        y: y - 30
     });
 }
 

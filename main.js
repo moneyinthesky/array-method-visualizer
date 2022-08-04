@@ -1,6 +1,6 @@
 import { configBuilder } from './config.js'
 import { ArrayDrawer } from './array-drawer.js'
-import { prepareMove, updateElementText, updateElementIndex, updateElementColor, triggerAnimation, convertArrayElementToValue } from './animate.js'
+import { prepareMove, updateElementText, updateElementIndex, updateElementColor, triggerAnimation, convertArrayElementToValue, convertArrayIndexToValue } from './animate.js'
 
 const params = new URLSearchParams(window.location.search);
 let defaultValues = {
@@ -147,7 +147,13 @@ async function runAnimation(mode, id) {
     } else if(mode === 'filter') {
         await executeFilter(id);
     } else if(mode === 'find') {
-        await find(id);
+        await executeFind(id);
+    } else if(mode === 'findIndex') {
+        await executeFindIndex(id);
+    } else if(mode === 'findLast') {
+        await executeFindLast(id);
+    } else if(mode === 'findLastIndex') {
+        await executeFindLastIndex(id);
     }
 }
 
@@ -187,7 +193,7 @@ async function executeFilter(id) {
     }
 }
 
-async function find(id) {
+async function executeFind(id) {
     let movingArray = SVG(document.getElementById(`movingArray${id}`));
     for(let [index, element] of movingArray.children().entries()) {
         prepareMove(element, config.halfwayPosition, 0, 0);
@@ -196,10 +202,91 @@ async function find(id) {
         let tSpan = element.children()[1].children();
         let currentValue = tSpan.text()[0];
         if(valueFunction(currentValue)) {
-            element.children()[2].attr({ opacity: 0 });
-            element.children()[3].attr({ opacity: 0 });
             updateElementColor(element, config.mappedArrayColor);
             convertArrayElementToValue(element);
+
+            let distFromTop = ((((array.length + 1) / 2) - 1) * (config.elementSize + config.elementSpacing));
+            prepareMove(
+                element, 
+                config.endPosition, 
+                -(index * (config.elementSize + config.elementSpacing)) + distFromTop,
+                config.halfwayPosition
+            );
+            await triggerAnimation(element, 'animateMap', 'map');
+            return;
+        } else {
+            updateElementColor(element, config.filteredOutColor);
+        }
+    }
+}
+
+async function executeFindIndex(id) {
+    let movingArray = SVG(document.getElementById(`movingArray${id}`));
+    for(let [index, element] of movingArray.children().entries()) {
+        prepareMove(element, config.halfwayPosition, 0, 0);
+        await triggerAnimation(element, 'animateHalfway', 'halfway');
+
+        let tSpan = element.children()[1].children();
+        let currentValue = tSpan.text()[0];
+        if(valueFunction(currentValue)) {
+            updateElementColor(element, config.mappedArrayColor);
+            convertArrayIndexToValue(element);
+
+            let distFromTop = ((((array.length + 1) / 2) - 1) * (config.elementSize + config.elementSpacing));
+            prepareMove(
+                element, 
+                config.endPosition, 
+                -(index * (config.elementSize + config.elementSpacing)) + distFromTop,
+                config.halfwayPosition
+            );
+            await triggerAnimation(element, 'animateMap', 'map');
+            return;
+        } else {
+            updateElementColor(element, config.filteredOutColor);
+        }
+    }
+}
+
+async function executeFindLast(id) {
+    let movingArray = SVG(document.getElementById(`movingArray${id}`));
+    for(let index = movingArray.children().length-1; index >= 0; index--) {
+        let element = movingArray.children()[index];
+        prepareMove(element, config.halfwayPosition, 0, 0);
+        await triggerAnimation(element, 'animateHalfway', 'halfway');
+
+        let tSpan = element.children()[1].children();
+        let currentValue = tSpan.text()[0];
+        if(valueFunction(currentValue)) {
+            updateElementColor(element, config.mappedArrayColor);
+            convertArrayElementToValue(element);
+
+            let distFromTop = ((((array.length + 1) / 2) - 1) * (config.elementSize + config.elementSpacing));
+            prepareMove(
+                element, 
+                config.endPosition, 
+                -(index * (config.elementSize + config.elementSpacing)) + distFromTop,
+                config.halfwayPosition
+            );
+            await triggerAnimation(element, 'animateMap', 'map');
+            return;
+        } else {
+            updateElementColor(element, config.filteredOutColor);
+        }
+    }
+}
+
+async function executeFindLastIndex(id) {
+    let movingArray = SVG(document.getElementById(`movingArray${id}`));
+    for(let index = movingArray.children().length-1; index >= 0; index--) {
+        let element = movingArray.children()[index];
+        prepareMove(element, config.halfwayPosition, 0, 0);
+        await triggerAnimation(element, 'animateHalfway', 'halfway');
+
+        let tSpan = element.children()[1].children();
+        let currentValue = tSpan.text()[0];
+        if(valueFunction(currentValue)) {
+            updateElementColor(element, config.mappedArrayColor);
+            convertArrayIndexToValue(element);
 
             let distFromTop = ((((array.length + 1) / 2) - 1) * (config.elementSize + config.elementSpacing));
             prepareMove(
