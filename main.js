@@ -1,6 +1,14 @@
 import { configBuilder } from './config.js'
 import { ArrayDrawer } from './array-drawer.js'
-import { updateElementText, updateElementIndex, updateElementColor, convertArrayElementToValue, convertArrayIndexToValue } from './animate.js'
+import {
+    moveHalfway,
+    moveToEnd,
+    updateElementText, 
+    updateElementIndex, 
+    updateElementColor, 
+    convertArrayElementToValue, 
+    convertArrayIndexToValue
+} from './animate.js'
 
 const params = new URLSearchParams(window.location.search);
 let defaultValues = {
@@ -56,7 +64,7 @@ function submitHandler(event) {
 }
 
 function updateModeWidth() {
-    document.getElementById('mode').style.width = `${document.getElementById('mode').value.length * 20}px`;
+    document.getElementById('mode').style.width = `${document.getElementById('mode').value.length * 18}px`;
 }
 
 function buildURL() {
@@ -160,11 +168,11 @@ async function runAnimation(mode, id) {
 async function executeMap(id) {
     let movingArray = SVG(document.getElementById(`movingArray${id}`));
     for(let element of movingArray.children()) {
-        await moveHalfway(element);
+        await moveHalfway(element, config);
         updateElementColor(element, config.mappedArrayColor);
         updateElementText(element, valueFunction);
         element.opacity(1);
-        await moveToEnd(element)
+        await moveToEnd(element, config)
     }
 }
 
@@ -172,7 +180,7 @@ async function executeFilter(id) {
     let movingArray = SVG(document.getElementById(`movingArray${id}`));
     let filteredElements = 0;
     for(let [index, element] of movingArray.children().entries()) {
-        await moveHalfway(element);
+        await moveHalfway(element, config);
 
         let currentValue = array[index];
         if(valueFunction(currentValue)) {
@@ -180,7 +188,7 @@ async function executeFilter(id) {
             updateElementIndex(element, filteredElements);
             element.opacity(1);
 
-            await moveToEnd(element, -((index - filteredElements) * (config.elementSize + config.elementSpacing)));
+            await moveToEnd(element, config, -((index - filteredElements) * (config.elementSize + config.elementSpacing)));
             filteredElements++;
         } else {
             updateElementColor(element, config.filteredOutColor);
@@ -191,7 +199,7 @@ async function executeFilter(id) {
 async function executeFind(id) {
     let movingArray = SVG(document.getElementById(`movingArray${id}`));
     for(let [index, element] of movingArray.children().entries()) {
-        await moveHalfway(element);
+        await moveHalfway(element, config);
 
         let currentValue = array[index];
         if(valueFunction(currentValue)) {
@@ -200,7 +208,7 @@ async function executeFind(id) {
             element.opacity(1);
 
             let distFromTop = (((array.length + 1) / 2) - 1) * (config.elementSize + config.elementSpacing) + (config.elementSize * 0.35 / 2);
-            await moveToEnd(element, -(index * (config.elementSize + config.elementSpacing)) + distFromTop);
+            await moveToEnd(element, config, -(index * (config.elementSize + config.elementSpacing)) + distFromTop);
             return;
         } else {
             updateElementColor(element, config.filteredOutColor);
@@ -211,7 +219,7 @@ async function executeFind(id) {
 async function executeFindIndex(id) {
     let movingArray = SVG(document.getElementById(`movingArray${id}`));
     for(let [index, element] of movingArray.children().entries()) {
-        await moveHalfway(element);
+        await moveHalfway(element, config);
 
         let currentValue = array[index];
         if(valueFunction(currentValue)) {
@@ -220,7 +228,7 @@ async function executeFindIndex(id) {
             element.opacity(1);
 
             let distFromTop = (((array.length + 1) / 2) - 1) * (config.elementSize + config.elementSpacing) - (config.elementSize * 0.35 / 2);
-            await moveToEnd(element, -(index * (config.elementSize + config.elementSpacing)) + distFromTop);
+            await moveToEnd(element, config, -(index * (config.elementSize + config.elementSpacing)) + distFromTop);
             return;
         } else {
             updateElementColor(element, config.filteredOutColor);
@@ -232,7 +240,7 @@ async function executeFindLast(id) {
     let movingArray = SVG(document.getElementById(`movingArray${id}`));
     for(let index = movingArray.children().length-1; index >= 0; index--) {
         let element = movingArray.children()[index];
-        await moveHalfway(element);
+        await moveHalfway(element, config);
 
         let currentValue = array[index];
         if(valueFunction(currentValue)) {
@@ -241,7 +249,7 @@ async function executeFindLast(id) {
             element.opacity(1);
 
             let distFromTop = (((array.length + 1) / 2) - 1) * (config.elementSize + config.elementSpacing) + (config.elementSize * 0.35 / 2);
-            await moveToEnd(element, -(index * (config.elementSize + config.elementSpacing)) + distFromTop);
+            await moveToEnd(element, config, -(index * (config.elementSize + config.elementSpacing)) + distFromTop);
             return;
         } else {
             updateElementColor(element, config.filteredOutColor);
@@ -253,7 +261,7 @@ async function executeFindLastIndex(id) {
     let movingArray = SVG(document.getElementById(`movingArray${id}`));
     for(let index = movingArray.children().length-1; index >= 0; index--) {
         let element = movingArray.children()[index];
-        await moveHalfway(element);
+        await moveHalfway(element, config);
 
         let currentValue = array[index];
         if(valueFunction(currentValue)) {
@@ -262,37 +270,10 @@ async function executeFindLastIndex(id) {
             element.opacity(1);
 
             let distFromTop = (((array.length + 1) / 2) - 1) * (config.elementSize + config.elementSpacing) - (config.elementSize * 0.35 / 2);
-            await moveToEnd(element, -(index * (config.elementSize + config.elementSpacing)) + distFromTop);
+            await moveToEnd(element, config, -(index * (config.elementSize + config.elementSpacing)) + distFromTop);
             return;
         } else {
             updateElementColor(element, config.filteredOutColor);
         }
     }
-}
-
-async function moveHalfway(element) {
-    await waitForRunner(element.animate(750, 100, 'now')
-        .ease('>')
-        .attr({
-            x: config.halfwayPosition,
-            opacity: 0.5
-        })
-    );
-}
-
-async function moveToEnd(element, moveY) {
-    await waitForRunner(element.animate(500, 250, 'now')
-        .ease('<')
-        .attr({
-            x: config.endPosition,
-            y: moveY ? moveY : 0
-        }));
-}
-
-async function waitForRunner(runner) {
-    return new Promise(function(resolve) { 
-        runner.after(() => {
-            resolve();
-        });
-    });
 }

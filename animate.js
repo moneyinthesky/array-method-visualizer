@@ -1,3 +1,22 @@
+export async function moveHalfway(element, config) {
+    await waitForRunner(element.animate(750, 100, 'now')
+        .ease('>')
+        .attr({
+            x: config.halfwayPosition,
+            opacity: 0.5
+        })
+    );
+}
+
+export async function moveToEnd(element, config, moveY) {
+    await waitForRunner(element.animate(500, 250, 'now')
+        .ease('<')
+        .attr({
+            x: config.endPosition,
+            y: moveY ? moveY : 0
+        }));
+}
+
 export function updateElementText(element, mapFunction) {
     let tSpan = element.children()[1].children();
     let currentValue = tSpan.text()[0].trim();
@@ -39,4 +58,12 @@ export function convertArrayIndexToValue(element) {
 
 function transformTextNode(node, newValue) {
     node.children()[0].text(newValue);
+}
+
+async function waitForRunner(runner) {
+    return new Promise(function(resolve) { 
+        runner.after(() => {
+            resolve();
+        });
+    });
 }
