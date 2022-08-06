@@ -1,35 +1,3 @@
-@keyframes map {
-    0%, 10% {
-        transform: translateX(var(--startX));
-        opacity: 100%;
-    }
-
-    100% {
-        transform: translate(var(--moveX), var(--moveY));
-        opacity: 100%;
-    }
-  }
-
-@keyframes halfway {
-    40% {
-        transform: translateX(var(--startX));
-        opacity: 0;
-    }
-
-    90%, 100% {
-        transform: translate(var(--moveX), var(--moveY));
-        opacity: 50%;
-    }
-}
-
-.animateMap {
-    animation: map 1s forwards ease;
-}
-
-.animateHalfway {
-    animation: halfway 1s forwards ease;
-}
-
 .controls {
     padding: 15px;
     background-color: #263238;

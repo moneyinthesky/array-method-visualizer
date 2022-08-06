@@ -15,7 +15,7 @@ export class ArrayDrawer {
     }
     
     buildArrayElement(value, index, x, y, opacity = 1) {
-        let group = this.draw.group().id(`element${index}`).opacity(opacity);
+        let group = this.draw.nested().id(`element${index}`).opacity(opacity);
         group.add(this.draw.rect(this.config.elementSize, this.config.elementSize).id('container').fill(this.config.arrayColor).attr({ x, y, rx: 10, stroke: 'black' }));
 
         let valueText = this.buildText(value, `value${index}`, x, y);
