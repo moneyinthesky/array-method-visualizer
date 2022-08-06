@@ -164,7 +164,7 @@ async function executeMap(id) {
         await triggerAnimation(element, 'animateHalfway', 'halfway');
 
         updateElementColor(element, config.mappedArrayColor);
-        updateElementText(element, valueFunction, config.elementSize);
+        updateElementText(element, valueFunction);
 
         prepareMove(element, config.endPosition, 0, config.halfwayPosition);
         await triggerAnimation(element, 'animateMap', 'map');
@@ -181,7 +181,7 @@ async function executeFilter(id) {
         let currentValue = array[index];
         if(valueFunction(currentValue)) {
             updateElementColor(element, config.mappedArrayColor);
-            updateElementIndex(element, filteredElements, config.elementSize);
+            updateElementIndex(element, filteredElements);
 
             prepareMove(element, config.endPosition, -((index - filteredElements) * (config.elementSize + config.elementSpacing)), config.halfwayPosition);
             await triggerAnimation(element, 'animateMap', 'map');
@@ -203,7 +203,7 @@ async function executeFind(id) {
             updateElementColor(element, config.mappedArrayColor);
             convertArrayElementToValue(element);
 
-            let distFromTop = ((((array.length + 1) / 2) - 1) * (config.elementSize + config.elementSpacing));
+            let distFromTop = (((array.length + 1) / 2) - 1) * (config.elementSize + config.elementSpacing) + (config.elementSize * 0.35 / 2);
             prepareMove(
                 element, 
                 config.endPosition, 
@@ -229,7 +229,7 @@ async function executeFindIndex(id) {
             updateElementColor(element, config.mappedArrayColor);
             convertArrayIndexToValue(element);
 
-            let distFromTop = ((((array.length + 1) / 2) - 1) * (config.elementSize + config.elementSpacing));
+            let distFromTop = (((array.length + 1) / 2) - 1) * (config.elementSize + config.elementSpacing) - (config.elementSize * 0.35 / 2);
             prepareMove(
                 element, 
                 config.endPosition, 
@@ -256,7 +256,7 @@ async function executeFindLast(id) {
             updateElementColor(element, config.mappedArrayColor);
             convertArrayElementToValue(element);
 
-            let distFromTop = ((((array.length + 1) / 2) - 1) * (config.elementSize + config.elementSpacing));
+            let distFromTop = (((array.length + 1) / 2) - 1) * (config.elementSize + config.elementSpacing) + (config.elementSize * 0.35 / 2);
             prepareMove(
                 element, 
                 config.endPosition, 
@@ -283,7 +283,7 @@ async function executeFindLastIndex(id) {
             updateElementColor(element, config.mappedArrayColor);
             convertArrayIndexToValue(element);
 
-            let distFromTop = ((((array.length + 1) / 2) - 1) * (config.elementSize + config.elementSpacing));
+            let distFromTop = (((array.length + 1) / 2) - 1) * (config.elementSize + config.elementSpacing) - (config.elementSize * 0.35 / 2);
             prepareMove(
                 element, 
                 config.endPosition, 
