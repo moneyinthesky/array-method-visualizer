@@ -56,7 +56,7 @@ function submitHandler(event) {
 }
 
 function updateModeWidth() {
-    document.getElementById('mode').style.width = `${document.getElementById('mode').value.length * 11}px`;
+    document.getElementById('mode').style.width = `${document.getElementById('mode').value.length * 20}px`;
 }
 
 function buildURL() {
@@ -124,7 +124,7 @@ function center(element, containingWidth, containingHeight, xOffset, yOffset) {
 }
 
 function buildText(draw, value) {
-    return draw.text(value).font({ family: 'Helvetica', size: 18 })
+    return draw.text(value).font({ family: 'Helvetica', size: config.elementFontSize })
 }
 
 function buildFunctionText(draw, value) {
@@ -135,7 +135,7 @@ function buildFunctionText(draw, value) {
         .attr({ 
             style: 'white-space: pre', 
             'font-family': 'Courier New', 
-            'font-size': 16, 
+            'font-size': config.elementFontSize, 
             'font-weight': 'bold', 
             'letter-spacing': '0em',
         });

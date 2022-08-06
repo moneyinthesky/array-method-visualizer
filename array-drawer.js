@@ -38,7 +38,7 @@ export class ArrayDrawer {
             .attr({ 
                 style: 'white-space: pre', 
                 'font-family': 'Courier New', 
-                'font-size': 16, 
+                'font-size': this.config.elementFontSize, 
                 'font-weight': 'bold', 
                 'letter-spacing': '0em',
                 x,

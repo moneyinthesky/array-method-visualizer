@@ -1,17 +1,19 @@
-let config = {
-    frameWidth: 800,
-    bezelWidth: 25,
-    elementSize: 100,
-    elementSpacing: 10,
-    infoBoxHeight: 50,
-
-    backgroundColor: '#90A4AE',
-    arrayColor: '#4DD0E1',
-    mappedArrayColor: '#81C784',
-    filteredOutColor: '#E57373',
-};
-
 export const configBuilder = array => {
+    let config = {
+        frameWidth: document.body.clientWidth * 0.99,
+    
+        backgroundColor: '#90A4AE',
+        arrayColor: '#4DD0E1',
+        mappedArrayColor: '#81C784',
+        filteredOutColor: '#E57373',
+    };
+
+    config.bezelWidth = config.frameWidth / 48,
+    config.elementSize = config.frameWidth / 10,
+    config.elementSpacing = config.frameWidth / 100,
+    config.infoBoxHeight = config.frameWidth / 32,
+    config.elementFontSize = config.frameWidth / 60,
+
     config.arrayFrameHeight = (config.bezelWidth * 2) + (array.length * config.elementSize) + ((array.length - 1) * config.elementSpacing);
     config.endPosition = config.frameWidth - config.elementSize - (config.bezelWidth * 2);
     config.halfwayPosition = ((config.endPosition - config.bezelWidth) / 2);
