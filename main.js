@@ -62,13 +62,19 @@ function initializeQuestions() {
     
     for (let i = 0; i < acc.length; i++) {
       acc[i].addEventListener("click", function() {
-        this.classList.toggle("active");
+        let currentPanel = this.nextElementSibling;
 
-        let panel = this.nextElementSibling;
-        if (panel.style.display === "block") {
-          panel.style.display = "none";
+        let panels = document.querySelectorAll('.panel');
+        panels = [...panels];
+        panels.filter(panel => panel !== currentPanel)
+            .forEach(panel => {
+                panel.style.display = "none";
+            });
+
+        if (currentPanel.style.display === "block") {
+            currentPanel.style.display = "none";
         } else {
-          panel.style.display = "block";
+            currentPanel.style.display = "block";
         }
       });
     }
@@ -125,10 +131,26 @@ function buildURL() {
 
 function go(event) {
     if(event) event.preventDefault();
-    array = JSON.parse(document.getElementById('array').innerText);
+    document.getElementById('consoleOutput').innerText = '';
+    document.getElementById('consoleOutput').classList.remove('error');
+    try {
+        array = JSON.parse(document.getElementById('array').innerText);
+    } catch(e) {
+        document.getElementById('consoleOutput').className = 'error';
+        document.getElementById('consoleOutput').innerText = e.message;
+        throw e;
+    }
+    
     config = configBuilder(array);
 
-    valueFunction = new Function("return " + document.getElementById('valueFunction').innerText)();
+    try {
+        valueFunction = new Function("return " + document.getElementById('valueFunction').innerText)();
+    } catch(e) {
+        document.getElementById('consoleOutput').className = 'error';
+        document.getElementById('consoleOutput').innerText = e.message;
+        throw e;
+    }
+
     mode = document.getElementById('mode').value;
 
     let visualization = document.getElementById('visualization');
@@ -202,6 +224,8 @@ async function runAnimation(mode, id) {
         await executeMap(id);
     } else if(mode === 'filter') {
         await executeFilter(id);
+    } else if(mode === 'forEach') {
+        await executeForEach(id);
     } else if(mode === 'find') {
         await executeFind(id);
     } else if(mode === 'findIndex') {
@@ -219,7 +243,15 @@ async function executeMap(id) {
         await moveHalfway(element, config);
         updateElementColor(element, config.mappedArrayColor);
         
-        let newValue = valueFunction(array[index], index, array);
+        let newValue;
+        try {
+            newValue = valueFunction(array[index], index, array);
+        } catch(e) {
+            document.getElementById('consoleOutput').className = 'error';
+            document.getElementById('consoleOutput').innerText = e.message;
+            throw e;
+        }
+
         updateElementText(element, newValue);
         
         element.opacity(1);
@@ -243,6 +275,24 @@ async function executeFilter(id) {
         } else {
             updateElementColor(element, config.filteredOutColor);
         }
+    }
+}
+
+async function executeForEach(id) {
+    let oldLog = console.log;
+    console.log = function (message) {
+        document.getElementById('consoleOutput').innerText += message + '\n';
+    };
+
+    let movingArray = SVG(document.getElementById(`movingArray${id}`));
+    let filteredElements = 0;
+    for(let [index, element] of movingArray.children().entries()) {
+        await moveHalfway(element, config);
+
+        valueFunction(array[index], index, array);
+        updateElementColor(element, config.mappedArrayColor);
+        updateElementIndex(element, filteredElements);
+        element.opacity(1);
     }
 }
 

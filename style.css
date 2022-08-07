@@ -87,8 +87,32 @@ select {
     column-gap: 5px;
 }
 
-#questions {
+#rightPanel {
+    display: flex;
+    flex-direction: column;
     width: 100%;
+}
+
+#console {
+    flex: none;
+    min-height: 8vw;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    padding-left: 10px;
+
+    background-color: #263238;
+    color: white;
+    font: 1rem Inconsolata, monospace;
+    /* text-shadow: 0 0 5px #C8C8C8; */
+    word-wrap: break-word;
+}
+
+.error {
+    color: red;
+}
+
+#questions {
+    flex-grow: 3;
     background-color: #90A4AE;
     border: 2px solid #455A64;
     border-radius: 10px;

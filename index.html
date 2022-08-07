@@ -15,6 +15,7 @@
                 arr.<select id="mode">
                     <option value="map">map</option>
                     <option value="filter">filter</option>
+                    <option value="forEach">forEach</option>
                     <option value="find">find</option>
                     <option value="findIndex">findIndex</option>
                     <option value="findLast">findLast</option>
@@ -28,7 +29,12 @@
     </form>
     <div class="container" id="container">
         <div id="svgContainer"></div>
-        <div id="questions"></div>
+        <div id="rightPanel">
+            <div id="console">
+                <pre><output id="consoleOutput"></output></pre>
+            </div>
+            <div id="questions"></div>
+        </div>
     </div>
 </body>
 

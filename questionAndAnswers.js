@@ -124,5 +124,6 @@ export const questionAndAnswers = {
                     (2) the index of the current element<br/>
                     (3) the array the filter method was called on`
         }
-    ]
+    ],
+    forEach: []
 };
