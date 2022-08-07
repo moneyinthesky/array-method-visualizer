@@ -1,5 +1,5 @@
-import { configBuilder } from './config.js'
-import { ArrayDrawer } from './array-drawer.js'
+import { configBuilder } from './config.js';
+import { ArrayDrawer } from './array-drawer.js';
 import {
     moveHalfway,
     moveToEnd,
@@ -8,28 +8,8 @@ import {
     updateElementColor, 
     convertArrayElementToValue, 
     convertArrayIndexToValue
-} from './animate.js'
-
-
-var acc = document.getElementsByClassName("accordion");
-var i;
-
-for (i = 0; i < acc.length; i++) {
-  acc[i].addEventListener("click", function() {
-    /* Toggle between adding and removing the "active" class,
-    to highlight the button that controls the panel */
-    this.classList.toggle("active");
-
-    /* Toggle between hiding and showing the active panel */
-    var panel = this.nextElementSibling;
-    if (panel.style.display === "block") {
-      panel.style.display = "none";
-    } else {
-      panel.style.display = "block";
-    }
-  });
-}
-
+} from './animate.js';
+import { questionAndAnswers } from './questionAndAnswers.js';
 
 const params = new URLSearchParams(window.location.search);
 let defaultValues = {
@@ -42,6 +22,7 @@ let {array, valueFunction, mode} = defaultValues;
 let config = configBuilder(array);
 initializeValues();
 initializeWidths();
+initializeQuestions();
 setUpEventListeners();
 go();
 
@@ -56,11 +37,57 @@ function initializeWidths() {
     updateModeWidth();
 }
 
+function initializeQuestions() {
+    let questions = document.getElementById('questions');
+    removeAllChildNodes(questions);
+
+    questionAndAnswers[document.getElementById('mode').value].forEach(qAndA => {
+        let button = document.createElement('button');
+        button.className = 'accordion';
+        button.innerText = qAndA.q;
+        questions.appendChild(button);
+
+        let div = document.createElement('div');
+        div.className = 'panel';
+
+        let p = document.createElement('p');
+        p.innerHTML = qAndA.a;
+        div.appendChild(p);
+
+        questions.appendChild(div);
+    });
+
+    let acc = document.getElementsByClassName("accordion");
+    let i;
+    
+    for (let i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+
+        let panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+          panel.style.display = "none";
+        } else {
+          panel.style.display = "block";
+        }
+      });
+    }
+}
+
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
 function setUpEventListeners() {
     document.getElementById('controlForm').addEventListener('submit', go);
     document.getElementById('array').addEventListener('keydown', submitHandler);
     document.getElementById('valueFunction').addEventListener('keydown', submitHandler);
-    document.getElementById('mode').addEventListener('change', _ => updateModeWidth());
+    document.getElementById('mode').addEventListener('change', _ => {
+        updateModeWidth();
+        initializeQuestions();
+    });
     document.getElementById('copyButton').addEventListener('click', copyCodeToClipboard);
     document.getElementById('shareButton').addEventListener('click', copyURLToClipboard);
 }
@@ -188,10 +215,13 @@ async function runAnimation(mode, id) {
 
 async function executeMap(id) {
     let movingArray = SVG(document.getElementById(`movingArray${id}`));
-    for(let element of movingArray.children()) {
+    for(let [index, element] of movingArray.children().entries()) {
         await moveHalfway(element, config);
         updateElementColor(element, config.mappedArrayColor);
-        updateElementText(element, valueFunction);
+        
+        let newValue = valueFunction(array[index], index, array);
+        updateElementText(element, newValue);
+        
         element.opacity(1);
         await moveToEnd(element, config)
     }
@@ -203,8 +233,7 @@ async function executeFilter(id) {
     for(let [index, element] of movingArray.children().entries()) {
         await moveHalfway(element, config);
 
-        let currentValue = array[index];
-        if(valueFunction(currentValue)) {
+        if(valueFunction(array[index], index, array)) {
             updateElementColor(element, config.mappedArrayColor);
             updateElementIndex(element, filteredElements);
             element.opacity(1);

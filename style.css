@@ -84,7 +84,7 @@ select {
 
 .container {
     display: flex;
-    column-gap: 10px;
+    column-gap: 5px;
 }
 
 #questions {

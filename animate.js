@@ -17,11 +17,8 @@ export async function moveToEnd(element, config, moveY) {
         }));
 }
 
-export function updateElementText(element, mapFunction) {
-    let tSpan = element.children()[1].children();
-    let currentValue = tSpan.text()[0].trim();
-
-    transformTextNode(element.children()[1], String(mapFunction(currentValue)));
+export function updateElementText(element, newValue) {
+    transformTextNode(element.children()[1], String(newValue));
 }
 
 export function updateElementIndex(element, newIndex) {
