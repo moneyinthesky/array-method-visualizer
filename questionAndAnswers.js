@@ -6,7 +6,7 @@ export const questionAndAnswers = {
         },
         {
             q: 'What does map return?',
-            a: 'Map returns a new array.'
+            a: 'map returns a new array.'
         },
         {
             q: 'What parameters does the map method take?',
@@ -27,11 +27,95 @@ export const questionAndAnswers = {
         },
         {
             q: 'What does filter return?',
-            a: 'Filter returns an array.'
+            a: 'filter returns an array.'
         },
         {
             q: 'What parameters does the filter method take?',
             a: 'In most cases, the filter method will just take a callback function as an argument.'
+        },
+        {
+            q: 'What parameters does the callback function take?',
+            a: `The callback function can take 3 parameters: <br/>
+                    (1) the value of the current element<br/>
+                    (2) the index of the current element<br/>
+                    (3) the array the filter method was called on`
+        }
+    ],
+    find: [
+        {
+            q: "What does find do?",
+            a: "Returns the first element for which the callback function returns true, or undefined if none are found."
+        },
+        {
+            q: 'What does find return?',
+            a: 'find returns a single element from the array. For example, if we have an array of strings, find will return a string.'
+        },
+        {
+            q: 'What parameters does the find method take?',
+            a: 'In most cases, the find method will just take a callback function as an argument.'
+        },
+        {
+            q: 'What parameters does the callback function take?',
+            a: `The callback function can take 3 parameters: <br/>
+                    (1) the value of the current element<br/>
+                    (2) the index of the current element<br/>
+                    (3) the array the filter method was called on`
+        }
+    ],
+    findIndex: [
+        {
+            q: "What does findIndex do?",
+            a: "Returns the index of the first element for which the callback function returns true, or undefined if none are found."
+        },
+        {
+            q: 'What does findIndex return?',
+            a: 'findIndex returns a number which represents an index in the array.'
+        },
+        {
+            q: 'What parameters does the findIndex method take?',
+            a: 'In most cases, the findIndex method will just take a callback function as an argument.'
+        },
+        {
+            q: 'What parameters does the callback function take?',
+            a: `The callback function can take 3 parameters: <br/>
+                    (1) the value of the current element<br/>
+                    (2) the index of the current element<br/>
+                    (3) the array the filter method was called on`
+        }
+    ],
+    findLast: [
+        {
+            q: "What does findLast do?",
+            a: "Returns the last element for which the callback function returns true, or undefined if none are found."
+        },
+        {
+            q: 'What does findLast return?',
+            a: 'findLast returns a single element from the array. For example, if we have an array of strings, find will return a string.'
+        },
+        {
+            q: 'What parameters does the findLast method take?',
+            a: 'In most cases, the findLast method will just take a callback function as an argument.'
+        },
+        {
+            q: 'What parameters does the callback function take?',
+            a: `The callback function can take 3 parameters: <br/>
+                    (1) the value of the current element<br/>
+                    (2) the index of the current element<br/>
+                    (3) the array the filter method was called on`
+        }
+    ],
+    findLastIndex: [
+        {
+            q: "What does findLastIndex do?",
+            a: "Returns the index of the last element for which the callback function returns true, or undefined if none are found."
+        },
+        {
+            q: 'What does findLastIndex return?',
+            a: 'findLastIndex returns a number which represents an index in the array.'
+        },
+        {
+            q: 'What parameters does the findLastIndex method take?',
+            a: 'In most cases, the findLastIndex method will just take a callback function as an argument.'
         },
         {
             q: 'What parameters does the callback function take?',
