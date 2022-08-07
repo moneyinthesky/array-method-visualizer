@@ -21,9 +21,14 @@
     border: 1px solid;
     font-family: 'Helvetica';
     font-size: 1.5vw;
+    cursor: pointer;
 }
 
 #copyButton:active, #shareButton:active {
+    background-color: #00ACC1;
+}
+
+#copyButton:hover, #shareButton:hover {
     background-color: #00ACC1;
 }
 
@@ -34,6 +39,11 @@
     border: 1px solid;
     font-family: 'Helvetica';
     font-size: 1.5vw;
+    cursor: pointer;
+}
+
+#goButton:hover {
+    background-color: #43A047;
 }
 
 #goButton:active {
@@ -52,8 +62,8 @@ code {
     color: #81D4FA;
     background-color: #263238;
     padding: 3px;
-    font-size: 1.75vw;
-    line-height: 2.5vw;
+    font-size: 1.5vw;
+    line-height: 2vw;
 }
 
 select {
@@ -70,4 +80,53 @@ select {
 
 #valueFunction {
     max-width: 200px;
+}
+
+.container {
+    display: flex;
+    column-gap: 10px;
+}
+
+#questions {
+    width: 100%;
+    background-color: #90A4AE;
+    border: 2px solid #455A64;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+#svgContainer {
+    border: 2px solid #455A64;
+    border-radius: 13px;
+}
+
+.accordion {
+    background-color: #4DD0E1;
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    text-align: left;
+    margin-top: 3px;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    border-radius: 5px;
+    font-family: 'Helvetica';
+    font-size: 1.2vw;
+    outline: none;
+    transition: 0.4s;
+}
+
+.active, .accordion:hover {
+    background-color: #00ACC1;
+}
+
+.panel {
+    padding: 0 10px;
+    background-color: #81C784;
+    display: none;
+    overflow: hidden;
+    font-family: 'Helvetica';
+    font-size: 1.2vw;
+    border-radius: 5px;
 }

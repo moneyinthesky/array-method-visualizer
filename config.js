@@ -1,6 +1,6 @@
 export const configBuilder = array => {
     let config = {
-        frameWidth: document.body.clientWidth * 0.99,
+        frameWidth: document.body.clientWidth * 0.70,
     
         backgroundColor: '#90A4AE',
         arrayColor: '#4DD0E1',
@@ -9,10 +9,10 @@ export const configBuilder = array => {
     };
 
     config.bezelWidth = config.frameWidth / 48,
-    config.elementSize = config.frameWidth / 10,
+    config.elementSize = config.frameWidth / 8,
     config.elementSpacing = config.frameWidth / 100,
-    config.infoBoxHeight = config.frameWidth / 32,
-    config.elementFontSize = config.frameWidth / 60,
+    config.infoBoxHeight = config.frameWidth / 24,
+    config.elementFontSize = config.frameWidth / 50,
 
     config.arrayFrameHeight = (config.bezelWidth * 2) + (array.length * config.elementSize) + ((array.length - 1) * config.elementSpacing);
     config.endPosition = config.frameWidth - config.elementSize - (config.bezelWidth * 2);

@@ -10,6 +10,27 @@ import {
     convertArrayIndexToValue
 } from './animate.js'
 
+
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    /* Toggle between adding and removing the "active" class,
+    to highlight the button that controls the panel */
+    this.classList.toggle("active");
+
+    /* Toggle between hiding and showing the active panel */
+    var panel = this.nextElementSibling;
+    if (panel.style.display === "block") {
+      panel.style.display = "none";
+    } else {
+      panel.style.display = "block";
+    }
+  });
+}
+
+
 const params = new URLSearchParams(window.location.search);
 let defaultValues = {
     array: params.get('array') ? params.get('array') : JSON.stringify(['apple', 'orange', 'banana']),
@@ -31,7 +52,7 @@ function initializeValues() {
 }
 
 function initializeWidths() {
-    document.getElementById('controls').style.width = config.frameWidth - 30;
+    document.getElementById('controls').style.width = document.body.clientWidth - 45;
     updateModeWidth();
 }
 
@@ -91,19 +112,19 @@ function go(event) {
 }
 
 function drawPanel(id) {
-    let draw = SVG().id('visualization').addTo('body').size(config.frameWidth, config.totalFrameHeight).attr({ style: 'margin-bottom: 10px'});
+    let draw = SVG().id('visualization').addTo('#svgContainer').size(config.frameWidth, config.totalFrameHeight);
     let drawer = new ArrayDrawer(draw, config);
 
     let frameGroup = draw.group().id(`frame${id}`);
     frameGroup.add(draw.rect(config.frameWidth, config.totalFrameHeight).fill(config.backgroundColor).attr({ rx: 10 }));
 
-    frameGroup.add(draw.rect(config.arrayPanelWidth, config.totalFrameHeight).fill('#4DD0E1').attr({ x: 0, y: 0, rx: 10, stroke: '#0097A7', 'fill-opacity': 0.25 }));
+    frameGroup.add(draw.rect(config.arrayPanelWidth, config.totalFrameHeight).fill('#4DD0E1').attr({ x: 0, y: 0, rx: 10, 'fill-opacity': 0.25 }));
     let originalArrayText = buildText(draw, 'Original Array');
     center(originalArrayText, config.arrayPanelWidth, config.infoFrameHeight, 0, config.totalFrameHeight - config.infoFrameHeight);
     frameGroup.add(originalArrayText);
     frameGroup.add(drawer.buildArrayGroup(array, `staticArray${id}`));
     
-    frameGroup.add(draw.rect(config.arrayPanelWidth, config.totalFrameHeight).fill('#81C784').attr({ x: config.frameWidth - config.arrayPanelWidth, y: 0, rx: 10, stroke: '#388E3C', 'fill-opacity': 0.25 }));
+    frameGroup.add(draw.rect(config.arrayPanelWidth, config.totalFrameHeight).fill('#81C784').attr({ x: config.frameWidth - config.arrayPanelWidth, y: 0, rx: 10, 'fill-opacity': 0.25 }));
     let newArrayText = buildText(draw, 'Output');
     center(newArrayText, config.arrayPanelWidth, config.infoFrameHeight, config.frameWidth - config.arrayPanelWidth, config.totalFrameHeight - config.infoFrameHeight);
     frameGroup.add(newArrayText);
