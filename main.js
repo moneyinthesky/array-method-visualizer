@@ -20,11 +20,20 @@ let defaultValues = {
 
 let {array, valueFunction, mode} = defaultValues;
 let config = configBuilder(array);
+initializeConsole();
 initializeValues();
 initializeWidths();
 initializeQuestions();
 setUpEventListeners();
 go();
+
+function initializeConsole() {
+    let oldLog = console.log;
+    console.log = message => {
+        document.getElementById('consoleOutput').innerText += message + '\n';
+        oldLog(message);
+    };
+}
 
 function initializeValues() {
     document.getElementById('array').innerText = array;
@@ -279,11 +288,6 @@ async function executeFilter(id) {
 }
 
 async function executeForEach(id) {
-    let oldLog = console.log;
-    console.log = function (message) {
-        document.getElementById('consoleOutput').innerText += message + '\n';
-    };
-
     let movingArray = SVG(document.getElementById(`movingArray${id}`));
     let filteredElements = 0;
     for(let [index, element] of movingArray.children().entries()) {
@@ -292,7 +296,7 @@ async function executeForEach(id) {
         valueFunction(array[index], index, array);
         updateElementColor(element, config.mappedArrayColor);
         updateElementIndex(element, filteredElements);
-        element.opacity(1);
+        // element.opacity(1);
     }
 }
 
