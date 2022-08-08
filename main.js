@@ -252,15 +252,7 @@ async function executeMap(id) {
         await moveHalfway(element, config);
         updateElementColor(element, config.mappedArrayColor);
         
-        let newValue;
-        try {
-            newValue = valueFunction(array[index], index, array);
-        } catch(e) {
-            document.getElementById('consoleOutput').className = 'error';
-            document.getElementById('consoleOutput').innerText = e.message;
-            throw e;
-        }
-
+        let newValue = runWithErrorHandling(() => valueFunction(array[index], index, array));
         updateElementText(element, newValue);
         
         element.opacity(1);
@@ -274,7 +266,7 @@ async function executeFilter(id) {
     for(let [index, element] of movingArray.children().entries()) {
         await moveHalfway(element, config);
 
-        if(valueFunction(array[index], index, array)) {
+        if(runWithErrorHandling(() => valueFunction(array[index], index, array))) {
             updateElementColor(element, config.mappedArrayColor);
             updateElementIndex(element, filteredElements);
             element.opacity(1);
@@ -293,10 +285,9 @@ async function executeForEach(id) {
     for(let [index, element] of movingArray.children().entries()) {
         await moveHalfway(element, config);
 
-        valueFunction(array[index], index, array);
+        runWithErrorHandling(() => valueFunction(array[index], index, array));
         updateElementColor(element, config.mappedArrayColor);
         updateElementIndex(element, filteredElements);
-        // element.opacity(1);
     }
 }
 
@@ -306,7 +297,7 @@ async function executeFind(id) {
         await moveHalfway(element, config);
 
         let currentValue = array[index];
-        if(valueFunction(currentValue)) {
+        if(runWithErrorHandling(() => valueFunction(currentValue))) {
             updateElementColor(element, config.mappedArrayColor);
             convertArrayElementToValue(element);
             element.opacity(1);
@@ -326,7 +317,7 @@ async function executeFindIndex(id) {
         await moveHalfway(element, config);
 
         let currentValue = array[index];
-        if(valueFunction(currentValue)) {
+        if(runWithErrorHandling(() => valueFunction(currentValue))) {
             updateElementColor(element, config.mappedArrayColor);
             convertArrayIndexToValue(element);
             element.opacity(1);
@@ -347,7 +338,7 @@ async function executeFindLast(id) {
         await moveHalfway(element, config);
 
         let currentValue = array[index];
-        if(valueFunction(currentValue)) {
+        if(runWithErrorHandling(() => valueFunction(currentValue))) {
             updateElementColor(element, config.mappedArrayColor);
             convertArrayElementToValue(element);
             element.opacity(1);
@@ -368,7 +359,7 @@ async function executeFindLastIndex(id) {
         await moveHalfway(element, config);
 
         let currentValue = array[index];
-        if(valueFunction(currentValue)) {
+        if(runWithErrorHandling(() => valueFunction(currentValue))) {
             updateElementColor(element, config.mappedArrayColor);
             convertArrayIndexToValue(element);
             element.opacity(1);
@@ -379,5 +370,15 @@ async function executeFindLastIndex(id) {
         } else {
             updateElementColor(element, config.filteredOutColor);
         }
+    }
+}
+
+function runWithErrorHandling(f) {
+    try {
+        return f();
+    } catch(e) {
+        document.getElementById('consoleOutput').className = 'error';
+        document.getElementById('consoleOutput').innerText = e.message;
+        throw e;
     }
 }

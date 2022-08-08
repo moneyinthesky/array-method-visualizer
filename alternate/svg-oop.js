@@ -1,42 +1,48 @@
 export class ArrayElementBuilder {
-    constructor(svg, config) {
+    constructor(svg, size, color, borderColor) {
         this.svg = svg;
-        this.config = config;
+        this.size = size;
+        this.color = color;
+        this.borderColor = borderColor;
 
-        this.draw();
+        this.dividerPosition = 0.65;
     }
 
     draw(value, index) {
-        let node = this.svg.nested().id(`element${index}`).size(this.config.elementSize, this.config.elementSize);
+        let node = this.svg.nested().id(`element${index}`).size(this.size, this.size);
         node.add(this.svg.rect('100%', '100%')
             .id('container')
-            .fill(this.config.arrayColor)
-            .attr({ rx: 10, stroke: 'black' })
+            .fill(this.color)
+            .attr({ rx: 10, stroke: this.borderColor })
         );
 
-        node.add(new TextBuilder(this.svg, this.config)
+        node.add(new TextBuilder(this.svg, this.size)
             .codeStyle()
-            .centered(this.config.elementSize, this.config.elementSize * 0.65)
+            .centered(this.size, this.size * this.dividerPosition)
             .draw(value)
         );
 
-        node.add(new TextBuilder(this.svg, this.config)
+        node.add(new TextBuilder(this.svg, this.size)
             .codeStyle()
-            .centered(this.config.elementSize, this.config.elementSize * 0.35, 0, this.config.elementSize * 0.65)
+            .centered(this.size, this.size * (1 - this.dividerPosition), 0, this.size * this.dividerPosition)
             .draw(index)
         );
         
-        
-        // let linePosition = y + (this.config.elementSize * 0.65);
-        // node.add(this.svg.line(x, linePosition, x + this.config.elementSize, linePosition).stroke('black'));
+        node.add(this.svg.line(
+            0, 
+            this.size * this.dividerPosition,
+            this.size, 
+            this.size * this.dividerPosition).stroke(this.borderColor)
+        );
+
         return node;
     }
 }
 
 export class TextBuilder {
-    constructor(svg, config) {
+    constructor(svg, size) {
         this.svg = svg;
-        this.config = config;
+        this.size = size;
         this.attributes = {};
     }
 
@@ -54,7 +60,7 @@ export class TextBuilder {
         Object.assign(this.attributes, {
             style: 'white-space: pre', 
             'font-family': 'Courier New', 
-            'font-size': this.config.elementFontSize, 
+            'font-size': this.size / 6, 
             'font-weight': 'bold', 
             'letter-spacing': '0em',
         });

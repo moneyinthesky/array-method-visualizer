@@ -125,5 +125,25 @@ export const questionAndAnswers = {
                     (3) the array the filter method was called on`
         }
     ],
-    forEach: []
+    forEach: [
+        {
+            q: "What does forEach do?",
+            a: "Executes the callback function once for each array element."
+        },
+        {
+            q: 'What does forEach return?',
+            a: 'forEach only returns undefined.'
+        },
+        {
+            q: 'What parameters does the forEach method take?',
+            a: 'In most cases, the forEach method will just take a callback function as an argument.'
+        },
+        {
+            q: 'What parameters does the callback function take?',
+            a: `The callback function can take 3 parameters: <br/>
+                    (1) the value of the current element<br/>
+                    (2) the index of the current element<br/>
+                    (3) the array the filter method was called on`
+        }
+    ]
 };
